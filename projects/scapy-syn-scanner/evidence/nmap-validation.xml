@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.94SVN scan initiated Tue Nov 10 04:57:28 2026 as: nmap -sS -n -Pn -&#45;max-rate 20 -&#45;max-retries 2 -p 22,80,443,8080 -oX /evidence/nmap-validation.xml 172.28.70.10 -->
+<nmaprun scanner="nmap" args="nmap -sS -n -Pn -&#45;max-rate 20 -&#45;max-retries 2 -p 22,80,443,8080 -oX /evidence/nmap-validation.xml 172.28.70.10" start="1794286648" startstr="Tue Nov 10 04:57:28 2026" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="4" services="22,80,443,8080"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="172.28.70.10" addrtype="ipv4"/>
+<address addr="02:42:AC:1C:46:0A" addrtype="mac"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1794286648" endtime="1794286648"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="172.28.70.10" addrtype="ipv4"/>
+<address addr="02:42:AC:1C:46:0A" addrtype="mac"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" method="table" conf="3"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="https" method="table" conf="3"/></port>
+<port protocol="tcp" portid="8080"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http-proxy" method="table" conf="3"/></port>
+</ports>
+<times srtt="81" rttvar="1612" to="100000"/>
+</host>
+<runstats><finished time="1794286648" timestr="Tue Nov 10 04:57:28 2026" summary="Nmap done at Tue Nov 10 04:57:28 2026; 1 IP address (1 host up) scanned in 0.40 seconds" elapsed="0.40" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

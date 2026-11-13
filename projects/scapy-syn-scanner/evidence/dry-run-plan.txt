@@ -1,0 +1,17 @@
+plan for scope wqe7002-a1-standard-tcp-syn-scan-v1
+  target:            172.28.70.10
+  interface:         eth0
+  ports:             22, 80, 443, 8080
+  rate:              20 probes/second (max)
+  attempts:          2 per port (max)
+  timeout:           1.5 s per attempt
+  worst-case probes: 8
+  schedule (port, attempt, source-port, sequence):
+       22  attempt 1  sport 40000  seq 234881472
+       22  attempt 2  sport 40000  seq 234885568
+       80  attempt 1  sport 40001  seq 234885568
+       80  attempt 2  sport 40001  seq 234889664
+      443  attempt 1  sport 40002  seq 234889664
+      443  attempt 2  sport 40002  seq 234893760
+     8080  attempt 1  sport 40003  seq 234893760
+     8080  attempt 2  sport 40003  seq 234897856

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bounded Scapy TCP SYN Scanner — Zhao Siyan</title>
+  <meta name="description" content="A TCP SYN scanner built from raw Scapy probes with strict reply matching, lecturer-scoped execution and independent Nmap validation. 77 tests, full evidence.">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <img src="../../assets/images/logo.svg" alt="">
+      <span>zhao-siyan<span class="mono">.sh</span></span>
+    </a>
+    <nav>
+      <a href="../../index.html#about">About</a>
+      <a href="../../index.html#skills">Skills</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:40px;">
+  <a class="back" href="../../index.html">← back to portfolio</a>
+  <div class="sec-head"><span class="num">PROJECT 02</span><h2>Bounded Scapy TCP SYN Scanner</h2></div>
+  <p class="meta mono" style="color:var(--faint);">WQE7002 Assignment 1 · Option B (TCP port scanner) · run 10 Nov 2026</p>
+  <p class="muted">A reconnaissance tool built with Scapy for the authorised course lab: it constructs its own
+  Ethernet/IPv4/TCP SYN probes, matches every reply to the exact probe it answers, classifies each port, closes
+  every SYN/ACK exchange with an RST, and writes a deterministic JSON result document. The tool never calls Nmap;
+  Nmap appears once, as the independent validation scanner the brief asks for.
+  <a href="README.md">Markdown version</a> of this write-up.</p>
+
+  <h3>Lab topology</h3>
+  <svg viewBox="0 0 860 250" width="100%" style="max-width:860px;margin:10px 0 20px;" role="img"
+       aria-label="Lab topology: workbench scanner probes the services host; Nmap validates; tcpdump captures.">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+      </marker>
+      <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/>
+      </marker>
+      <marker id="arrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+      </marker>
+    </defs>
+
+    <!-- workbench box -->
+    <rect x="24" y="40" width="300" height="170" rx="10" fill="#111a2e" stroke="#24324f"/>
+    <text x="174" y="68" text-anchor="middle" fill="#e3eaf7" font-family="Consolas,monospace" font-size="14">workbench container</text>
+    <text x="174" y="88" text-anchor="middle" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">eth0 · 172.28.70.2</text>
+    <text x="44" y="118" fill="#34d399" font-family="Consolas,monospace" font-size="12">&gt; wqe7002-recon (Scapy 2.7.0)</text>
+    <text x="44" y="138" fill="#34d399" font-family="Consolas,monospace" font-size="12">  --execute | --trials 5 | plan mode</text>
+    <text x="44" y="160" fill="#60a5fa" font-family="Consolas,monospace" font-size="12">$ nmap -sS -n -Pn (validation only)</text>
+    <text x="44" y="182" fill="#fbbf24" font-family="Consolas,monospace" font-size="12"># tcpdump capture → experiment.pcap</text>
+
+    <!-- target box -->
+    <rect x="536" y="40" width="300" height="170" rx="10" fill="#111a2e" stroke="#24324f"/>
+    <text x="686" y="68" text-anchor="middle" fill="#e3eaf7" font-family="Consolas,monospace" font-size="14">services host</text>
+    <text x="686" y="88" text-anchor="middle" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">172.28.70.10 (scope manifest)</text>
+    <text x="556" y="118" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">22/tcp  sshd</text>
+    <text x="556" y="138" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">80/tcp  nginx http</text>
+    <text x="556" y="158" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">443/tcp nginx tls</text>
+    <text x="556" y="178" fill="#9fb0cc" font-family="Consolas,monospace" font-size="12">8080/tcp nginx alt-http</text>
+
+    <!-- arrows -->
+    <line x1="324" y1="96"  x2="528" y2="112" stroke="#34d399" stroke-width="1.6" marker-end="url(#arr)"/>
+    <text x="426" y="88" text-anchor="middle" fill="#34d399" font-family="Consolas,monospace" font-size="11">SYN probes</text>
+    <line x1="528" y1="132" x2="324" y2="118" stroke="#34d399" stroke-width="1.6" marker-end="url(#arr)"/>
+    <text x="426" y="142" text-anchor="middle" fill="#34d399" font-family="Consolas,monospace" font-size="11">SYN/ACK (ack = ISN+1)</text>
+    <line x1="324" y1="158" x2="528" y2="176" stroke="#34d399" stroke-width="1.6" marker-end="url(#arr)"/>
+    <text x="426" y="196" text-anchor="middle" fill="#34d399" font-family="Consolas,monospace" font-size="11">closing RSTs</text>
+    <line x1="324" y1="196" x2="528" y2="60"  stroke="#60a5fa" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrB)"/>
+    <text x="400" y="226" text-anchor="middle" fill="#60a5fa" font-family="Consolas,monospace" font-size="11">Nmap validation run (same 4 ports)</text>
+  </svg>
+
+  <h3>Objective</h3>
+  <p>Build a TCP SYN scanner that (1) crafts raw probes instead of relying on Nmap's engine, (2) classifies port
+  states strictly from verifiable replies, (3) cannot transmit outside a lecturer-issued scope, and (4) can be
+  checked against an independent Nmap run on the same target.</p>
+
+  <h3>Environment and tools</h3>
+  <div class="table-scroll"><table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Host</td><td>Dockerised course lab — <code>workbench</code> container, Linux, <code>eth0</code></td></tr>
+    <tr><td>Scanner address</td><td>172.28.70.2</td></tr>
+    <tr><td>Authorised target</td><td>172.28.70.10 (services host, from the scope manifest)</td></tr>
+    <tr><td>Ports</td><td>22, 80, 443, 8080 (manifest allow-list, unchanged)</td></tr>
+    <tr><td>Language / libraries</td><td>Python 3.12.3, Scapy 2.7.0</td></tr>
+    <tr><td>Validation tool</td><td>Nmap 7.94SVN (<code>-sS -n -Pn --max-rate 20 --max-retries 2</code>)</td></tr>
+    <tr><td>Capture</td><td>Course capture helper (tcpdump of the scanner's own exchange)</td></tr>
+    <tr><td>Bounds</td><td>at most 20 pps, 1.5 s per attempt, at most 2 attempts per port</td></tr>
+  </table></div>
+
+  <h3>Method, step by step</h3>
+  <ol>
+    <li><strong>Scope manifest.</strong> Targets, ports and bounds come only from the lecturer-issued scope file;
+    no CLI argument can name a target or port. Malformed, placeholder or out-of-bounds values are rejected before
+    any probe is built.</li>
+    <li><strong>Deterministic probes.</strong> One SYN probe per port: Ethernet + IPv4 + TCP/SYN, source ports
+    40000 + port index, fixed ISNs per port and attempt — so every reply can be tied to the exact probe it
+    answers.</li>
+    <li><strong>ARP resolution.</strong> The target MAC is resolved with an ARP exchange before each trial.</li>
+    <li><strong>Strict matching.</strong> A reply counts only if it arrives on the scanning interface, is addressed
+    to the scanner's own IP and matches a recorded probe: SYN/ACK must carry <code>ack = ISN + 1</code>; RST must
+    come from the target; an ICMP type-3 unreachable is kept only when its quoted segment matches. Everything else
+    (other hosts, own outbound frames, wrong acknowledgements) is ignored.</li>
+    <li><strong>Classification.</strong> First definitive reply per port decides the state: SYN/ACK → open, RST →
+    closed, ICMP → filtered-icmp-unreachable, silence after both attempts → filtered-or-no-response. A port
+    resolved in attempt 1 is never probed again.</li>
+    <li><strong>Closing discipline.</strong> Every SYN/ACK exchange is closed with an RST (<code>seq = ack</code>
+    of that SYN/ACK). One pacing gate applies to everything the tool sends, keeping the run inside the manifest's
+    20 pps.</li>
+    <li><strong>Plan mode.</strong> Without <code>--execute</code> the tool validates the scope and prints the full
+    probe schedule without transmitting anything — this is the default behaviour.</li>
+    <li><strong>Trials extension.</strong> <code>--trials N</code> repeats the same bounded scan N times and adds
+    per-port outcome stability, RTT statistics, retry probes and second-attempt recoveries to the summary.</li>
+    <li><strong>Independent validation.</strong> The same port set was scanned with Nmap on the same host, and the
+    two result documents were compared observation by observation.</li>
+    <li><strong>Evidence hashing.</strong> Every evidence file was copied from the container and SHA-256-hashed
+    (<code>SHA256SUMS</code>).</li>
+  </ol>
+
+  <h3>Results</h3>
+  <ul>
+    <li><strong>All four in-scope ports open on the first attempt</strong> (22/tcp, 80/tcp, 443/tcp, 8080/tcp),
+    with per-port RTTs of 0.124–0.395 ms — one LAN hop.</li>
+    <li><strong>Complete agreement with Nmap</strong> on every observation: port states, reason
+    (<code>syn-ack</code>, ttl 64), target MAC <code>02:42:ac:1c:46:0a</code> and the sub-millisecond RTT class.</li>
+    <li><strong>5 repeated trials:</strong> 100 % outcome agreement, mean RTT 0.082–0.090 ms, zero retry probes
+    (every first attempt answered immediately on this LAN).</li>
+    <li><strong>77/77 offline unit tests pass</strong> — construction, matching (unrelated, duplicate, missing,
+    invalid), scope rejection, rate limiting, attempt bounds, determinism, CLI contract, retry/timing extension.
+    Tests never transmit.</li>
+    <li><strong>One diagnosed artifact:</strong> the capture contains roughly twice as many RSTs as the tool sent.
+    The Linux kernel on the scanner host also answers the SYN/ACKs it never requested with its own RSTs — a
+    raw-socket artifact, confirmed by the same pattern in Nmap's run. Disclosed rather than hidden.</li>
+  </ul>
+
+  <div class="table-scroll"><table>
+    <tr><th>Observation</th><th>Scapy tool</th><th>Nmap XML</th><th>Agreement</th></tr>
+    <tr><td>22/tcp</td><td>open, 1 probe, rtt 0.395 ms</td><td>open, syn-ack, ttl 64</td><td>agreement</td></tr>
+    <tr><td>80/tcp</td><td>open, rtt 0.164 ms</td><td>open, syn-ack, ttl 64</td><td>agreement</td></tr>
+    <tr><td>443/tcp</td><td>open, rtt 0.124 ms</td><td>open, syn-ack, ttl 64</td><td>agreement</td></tr>
+    <tr><td>8080/tcp</td><td>open, rtt 0.192 ms</td><td>open, syn-ack, ttl 64</td><td>agreement</td></tr>
+    <tr><td>Target MAC</td><td>02:42:ac:1c:46:0a (ARP-resolved)</td><td>02:42:ac:1c:46:0a</td><td>agreement</td></tr>
+  </table></div>
+
+  <h3>Repository layout</h3>
+  <pre class="mono" style="background:var(--code-bg);border:1px solid var(--border-soft);border-radius:8px;padding:14px 18px;overflow-x:auto;font-size:13px;">src/wqe7002_recon/   scope, probes, matcher, engine, transport, output, cli
+tests/               77 offline unit tests (zero packets transmitted)
+evidence/            the measured experiment</pre>
+
+  <h3>Evidence</h3>
+  <ul>
+    <li><a href="evidence/result.json"><code>evidence/result.json</code></a> — the tool's measured result document
+    (window, parameters, per-port states and observations)</li>
+    <li><a href="evidence/trials.json"><code>evidence/trials.json</code></a> — 5 repeated bounded trials with
+    stability and RTT summary</li>
+    <li><a href="evidence/nmap-validation.xml"><code>evidence/nmap-validation.xml</code></a> — the independent
+    Nmap run, XML output</li>
+    <li><a href="evidence/scope.json"><code>evidence/scope.json</code></a> — the lecturer-issued scope manifest as
+    executed</li>
+    <li><a href="evidence/dry-run-plan.txt"><code>evidence/dry-run-plan.txt</code></a> — plan mode output: validates
+    the scope and prints the probe schedule without transmitting</li>
+    <li><a href="evidence/experiment.pcap"><code>evidence/experiment.pcap</code></a> — capture of the scanner's own
+    exchange</li>
+    <li><a href="evidence/SHA256SUMS"><code>evidence/SHA256SUMS</code></a> — SHA-256 hashes of every evidence file</li>
+    <li><a href="evidence/test-run.txt"><code>evidence/test-run.txt</code></a> — re-run of the 77-test suite on the
+    repository copy (Windows host, Scapy 2.7.0)</li>
+    <li><a href="evidence/README.md"><code>evidence/README.md</code></a> — provenance notes for every file</li>
+    <li><a href="src/wqe7002_recon/"><code>src/</code></a> and <a href="tests/"><code>tests/</code></a> — full
+    source and test suite</li>
+  </ul>
+
+  <h3>What I would do differently</h3>
+  <ul>
+    <li><strong>Adaptive per-port timeout.</strong> Replace the fixed 1.5 s receive window with a timeout derived
+    from the observed RTT distribution (median + 3σ, clamped to the manifest bound), so silent ports stop costing
+    the full window. Guard tests against timeout oscillation across trials would come with it.</li>
+    <li><strong>A classification-diversity run.</strong> All four in-scope ports are open, so the closed, ICMP and
+    no-response paths were only exercised in unit tests. A lab with closed and filtered ports in scope would
+    exercise every classification path against real traffic.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Safety.</strong> Targets and ports can only come from the scope manifest. Hard bounds (20 pps,
+    2 attempts, 30 ports) sit on top of whatever the manifest declares. There is no stealth, spoofing or evasion
+    code anywhere, and without <code>--execute</code> nothing goes on the wire.
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Zhao Siyan · <a href="../../index.html">back to portfolio</a></span>
+    <span><a href="https://github.com/EngineerAndJohn/cybersecurity-portfolio">Repository</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

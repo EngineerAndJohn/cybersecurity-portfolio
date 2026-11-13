@@ -1,0 +1,144 @@
+{
+  "schema": "wqe7002-recon-result-v1",
+  "tool": {
+    "name": "wqe7002-recon",
+    "version": "1.0.0"
+  },
+  "option": "tcp-syn-scan",
+  "scope_id": "wqe7002-a1-standard-tcp-syn-scan-v1",
+  "window": {
+    "started_utc": "2026-11-10T04:57:25.504689Z",
+    "finished_utc": "2026-11-10T04:57:27.869352Z"
+  },
+  "parameters": {
+    "target": "172.28.70.10",
+    "interface": "eth0",
+    "ports": [
+      22,
+      80,
+      443,
+      8080
+    ],
+    "maximum_rate_pps": 20,
+    "maximum_attempts": 2,
+    "timeout_seconds": 1.5,
+    "probe_parameters_per_port": {
+      "22": {
+        "source_port": 40000,
+        "sequences": [
+          234881472,
+          234885568
+        ]
+      },
+      "80": {
+        "source_port": 40001,
+        "sequences": [
+          234885568,
+          234889664
+        ]
+      },
+      "443": {
+        "source_port": 40002,
+        "sequences": [
+          234889664,
+          234893760
+        ]
+      },
+      "8080": {
+        "source_port": 40003,
+        "sequences": [
+          234893760,
+          234897856
+        ]
+      }
+    }
+  },
+  "probes_transmitted": 4,
+  "closing_rsts_sent": 4,
+  "results": [
+    {
+      "port": 22,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.729397Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.729397Z",
+          "received_utc": "2026-11-10T04:57:25.729792Z",
+          "rtt_ms": 0.395,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 80,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.809526Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.809526Z",
+          "received_utc": "2026-11-10T04:57:25.809690Z",
+          "rtt_ms": 0.164,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.889243Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.889243Z",
+          "received_utc": "2026-11-10T04:57:25.889367Z",
+          "rtt_ms": 0.124,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 8080,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.969176Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:25.969176Z",
+          "received_utc": "2026-11-10T04:57:25.969368Z",
+          "rtt_ms": 0.192,
+          "duplicate": false
+        }
+      ]
+    }
+  ]
+}
