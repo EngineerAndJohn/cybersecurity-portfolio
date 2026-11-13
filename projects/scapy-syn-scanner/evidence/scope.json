@@ -1,0 +1,19 @@
+{
+  "capture_point": "workbench eth0; records the authorised scanner vantage point",
+  "environment": "isolated-course-lab",
+  "interface": "eth0",
+  "maximum_attempts": 2,
+  "maximum_rate_pps": 20,
+  "option": "tcp-syn-scan",
+  "ports": [
+    22,
+    80,
+    443,
+    8080
+  ],
+  "schema": "wqe7002-recon-scope-v1",
+  "scope_id": "wqe7002-a1-standard-tcp-syn-scan-v1",
+  "target": "172.28.70.10",
+  "timeout_seconds": 1.5,
+  "topology": "wqe7002-course-lab Compose internal bridge"
+}

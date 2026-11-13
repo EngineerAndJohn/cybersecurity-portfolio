@@ -1,0 +1,684 @@
+{
+  "schema": "wqe7002-recon-result-v1",
+  "tool": {
+    "name": "wqe7002-recon",
+    "version": "1.0.0"
+  },
+  "option": "tcp-syn-scan",
+  "scope_id": "wqe7002-a1-standard-tcp-syn-scan-v1",
+  "window": {
+    "started_utc": "2026-11-10T04:57:28.821787Z",
+    "finished_utc": "2026-11-10T04:57:40.769815Z"
+  },
+  "parameters": {
+    "target": "172.28.70.10",
+    "interface": "eth0",
+    "ports": [
+      22,
+      80,
+      443,
+      8080
+    ],
+    "maximum_rate_pps": 20,
+    "maximum_attempts": 2,
+    "timeout_seconds": 1.5,
+    "probe_parameters_per_port": {
+      "22": {
+        "source_port": 40000,
+        "sequences": [
+          234881472,
+          234885568
+        ]
+      },
+      "80": {
+        "source_port": 40001,
+        "sequences": [
+          234885568,
+          234889664
+        ]
+      },
+      "443": {
+        "source_port": 40002,
+        "sequences": [
+          234889664,
+          234893760
+        ]
+      },
+      "8080": {
+        "source_port": 40003,
+        "sequences": [
+          234893760,
+          234897856
+        ]
+      }
+    }
+  },
+  "probes_transmitted": 20,
+  "closing_rsts_sent": 20,
+  "results": [
+    {
+      "port": 22,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.039387Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.039387Z",
+          "received_utc": "2026-11-10T04:57:29.039468Z",
+          "rtt_ms": 0.081,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 80,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.119197Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.119197Z",
+          "received_utc": "2026-11-10T04:57:29.119280Z",
+          "rtt_ms": 0.083,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 443,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.199137Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.199137Z",
+          "received_utc": "2026-11-10T04:57:29.199214Z",
+          "rtt_ms": 0.077,
+          "duplicate": false
+        }
+      ]
+    },
+    {
+      "port": 8080,
+      "state": "open",
+      "attempts_used": 1,
+      "observations": [
+        {
+          "kind": "probe",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.279114Z",
+          "duplicate": false
+        },
+        {
+          "kind": "syn-ack",
+          "attempt": 1,
+          "sent_utc": "2026-11-10T04:57:29.279114Z",
+          "received_utc": "2026-11-10T04:57:29.279193Z",
+          "rtt_ms": 0.079,
+          "duplicate": false
+        }
+      ]
+    }
+  ],
+  "trials": [
+    {
+      "trial": 1,
+      "window": {
+        "started_utc": "2026-11-10T04:57:28.821787Z",
+        "finished_utc": "2026-11-10T04:57:31.179182Z"
+      },
+      "probes_transmitted": 4,
+      "closing_rsts_sent": 4,
+      "results": [
+        {
+          "port": 22,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.039387Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.039387Z",
+              "received_utc": "2026-11-10T04:57:29.039468Z",
+              "rtt_ms": 0.081,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.119197Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.119197Z",
+              "received_utc": "2026-11-10T04:57:29.119280Z",
+              "rtt_ms": 0.083,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.199137Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.199137Z",
+              "received_utc": "2026-11-10T04:57:29.199214Z",
+              "rtt_ms": 0.077,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.279114Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:29.279114Z",
+              "received_utc": "2026-11-10T04:57:29.279193Z",
+              "rtt_ms": 0.079,
+              "duplicate": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "window": {
+        "started_utc": "2026-11-10T04:57:31.179217Z",
+        "finished_utc": "2026-11-10T04:57:33.639175Z"
+      },
+      "probes_transmitted": 4,
+      "closing_rsts_sent": 4,
+      "results": [
+        {
+          "port": 22,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.429107Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.429107Z",
+              "received_utc": "2026-11-10T04:57:31.429183Z",
+              "rtt_ms": 0.076,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.509195Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.509195Z",
+              "received_utc": "2026-11-10T04:57:31.509296Z",
+              "rtt_ms": 0.101,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.609186Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.609186Z",
+              "received_utc": "2026-11-10T04:57:31.609310Z",
+              "rtt_ms": 0.124,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.679425Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:31.679425Z",
+              "received_utc": "2026-11-10T04:57:31.679503Z",
+              "rtt_ms": 0.078,
+              "duplicate": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "window": {
+        "started_utc": "2026-11-10T04:57:33.639213Z",
+        "finished_utc": "2026-11-10T04:57:35.979280Z"
+      },
+      "probes_transmitted": 4,
+      "closing_rsts_sent": 4,
+      "results": [
+        {
+          "port": 22,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:33.859201Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:33.859201Z",
+              "received_utc": "2026-11-10T04:57:33.859282Z",
+              "rtt_ms": 0.081,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:33.939260Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:33.939260Z",
+              "received_utc": "2026-11-10T04:57:33.939374Z",
+              "rtt_ms": 0.114,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:34.019214Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:34.019214Z",
+              "received_utc": "2026-11-10T04:57:34.019297Z",
+              "rtt_ms": 0.084,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:34.099462Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:34.099462Z",
+              "received_utc": "2026-11-10T04:57:34.099552Z",
+              "rtt_ms": 0.09,
+              "duplicate": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "window": {
+        "started_utc": "2026-11-10T04:57:35.979325Z",
+        "finished_utc": "2026-11-10T04:57:38.379088Z"
+      },
+      "probes_transmitted": 4,
+      "closing_rsts_sent": 4,
+      "results": [
+        {
+          "port": 22,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.209370Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.209370Z",
+              "received_utc": "2026-11-10T04:57:36.209451Z",
+              "rtt_ms": 0.081,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.289169Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.289169Z",
+              "received_utc": "2026-11-10T04:57:36.289244Z",
+              "rtt_ms": 0.075,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.369383Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.369383Z",
+              "received_utc": "2026-11-10T04:57:36.369462Z",
+              "rtt_ms": 0.079,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.449145Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:36.449145Z",
+              "received_utc": "2026-11-10T04:57:36.449226Z",
+              "rtt_ms": 0.081,
+              "duplicate": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "window": {
+        "started_utc": "2026-11-10T04:57:38.379119Z",
+        "finished_utc": "2026-11-10T04:57:40.769815Z"
+      },
+      "probes_transmitted": 4,
+      "closing_rsts_sent": 4,
+      "results": [
+        {
+          "port": 22,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.609395Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.609395Z",
+              "received_utc": "2026-11-10T04:57:38.609487Z",
+              "rtt_ms": 0.092,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 80,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.699381Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.699381Z",
+              "received_utc": "2026-11-10T04:57:38.699458Z",
+              "rtt_ms": 0.078,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 443,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.779185Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.779185Z",
+              "received_utc": "2026-11-10T04:57:38.779256Z",
+              "rtt_ms": 0.071,
+              "duplicate": false
+            }
+          ]
+        },
+        {
+          "port": 8080,
+          "state": "open",
+          "attempts_used": 1,
+          "observations": [
+            {
+              "kind": "probe",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.859348Z",
+              "duplicate": false
+            },
+            {
+              "kind": "syn-ack",
+              "attempt": 1,
+              "sent_utc": "2026-11-10T04:57:38.859348Z",
+              "received_utc": "2026-11-10T04:57:38.859470Z",
+              "rtt_ms": 0.123,
+              "duplicate": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "trials": 5,
+    "retry_probes_sent": 0,
+    "second_attempt_recoveries_total": 0,
+    "per_port": [
+      {
+        "port": 22,
+        "outcomes": {
+          "open": 5
+        },
+        "attempts_used_total": 5,
+        "second_attempt_recoveries": 0,
+        "rtt_ms": {
+          "count": 5,
+          "mean": 0.082,
+          "min": 0.076,
+          "max": 0.092
+        }
+      },
+      {
+        "port": 80,
+        "outcomes": {
+          "open": 5
+        },
+        "attempts_used_total": 5,
+        "second_attempt_recoveries": 0,
+        "rtt_ms": {
+          "count": 5,
+          "mean": 0.09,
+          "min": 0.075,
+          "max": 0.114
+        }
+      },
+      {
+        "port": 443,
+        "outcomes": {
+          "open": 5
+        },
+        "attempts_used_total": 5,
+        "second_attempt_recoveries": 0,
+        "rtt_ms": {
+          "count": 5,
+          "mean": 0.087,
+          "min": 0.071,
+          "max": 0.124
+        }
+      },
+      {
+        "port": 8080,
+        "outcomes": {
+          "open": 5
+        },
+        "attempts_used_total": 5,
+        "second_attempt_recoveries": 0,
+        "rtt_ms": {
+          "count": 5,
+          "mean": 0.09,
+          "min": 0.078,
+          "max": 0.123
+        }
+      }
+    ]
+  }
+}
