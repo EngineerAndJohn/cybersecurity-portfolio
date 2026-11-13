@@ -1,0 +1,24 @@
+# Secrets and local files — never commit
+.env
+*.pem
+*.key
+secrets*
+*.secret
+.ssh/
+credentials*
+
+# Python artefacts
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# OS and editor junk
+Thumbs.db
+.DS_Store
+*.swp
+*~
+
+# Local logs and temp files
+*.log
+*.tmp
