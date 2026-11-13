@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Passive OSINT Footprint Lab — Zhao Siyan</title>
+  <meta name="description" content="Passive OSINT footprint lab: Certificate Transparency, DNS/WHOIS, breach and metadata analysis of a university domain — findings and defensive actions.">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <img src="../../assets/images/logo.svg" alt="">
+      <span>zhao-siyan<span class="mono">.sh</span></span>
+    </a>
+    <nav>
+      <a href="../../index.html#about">About</a>
+      <a href="../../index.html#skills">Skills</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:40px;">
+  <a class="back" href="../../index.html">← back to portfolio</a>
+  <div class="sec-head"><span class="num">PROJECT 01</span><h2>Passive OSINT Footprint Lab</h2></div>
+  <p class="meta mono" style="color:var(--faint);">WQE7011 Advanced Computer Penetration and Defence · Week-4 lab · 13 Nov 2026</p>
+  <p class="muted">Information asymmetry on a university domain: what an attacker learns without ever sending
+  a packet, and the defensive action each finding implies. <a href="README.md">Markdown version</a> of this
+  write-up.</p>
+
+  <h3>Objective</h3>
+  <p>Measure what an attacker can learn about an organisation <strong>without ever sending a packet to it</strong>
+  (passive reconnaissance only), and turn every finding into a defensive action. The lab uses a public university
+  domain chosen by the lab brief; all sources are public by design (certificate logs, DNS, registry records) or
+  operate on my own data (breach check, sample file metadata).</p>
+
+  <h3>Environment and tools</h3>
+  <div class="table-scroll"><table>
+    <tr><th>Tool</th><th>Used for</th></tr>
+    <tr><td>crt.sh (web + JSON API, <code>curl</code> + <code>jq</code>)</td><td>Certificate Transparency subdomain search</td></tr>
+    <tr><td>MXToolbox</td><td>MX and DNS record lookups</td></tr>
+    <tr><td>ICANN Lookup → MYNIC RDAP/WHOIS</td><td>Registry and registrant records</td></tr>
+    <tr><td>Have I Been Pwned</td><td>Breach check of my own email address only</td></tr>
+    <tr><td>Metadata2Go</td><td>EXIF metadata of the lab sample photo</td></tr>
+    <tr><td><code>curl</code>, <code>jq</code>, Python</td><td>Automation and JSON processing of public APIs</td></tr>
+  </table></div>
+  <p class="small">No scanner, no probing tool and no packets directed at the target were used at any point —
+  every source above is public or self-referential.</p>
+
+  <h3>Method, step by step</h3>
+  <ol>
+    <li><strong>Certificate Transparency search.</strong> Queried crt.sh for <code>%.upm.edu.my</code> via the
+    JSON API and collected the hostnames from every logged certificate: 232 unique hostnames. Classified names
+    that suggest internal, test or administrative infrastructure.</li>
+    <li><strong>DNS and mail records.</strong> Ran <code>mx:</code> and <code>dns:</code> lookups. Recorded the
+    mail exchanger priority chain and the name servers.</li>
+    <li><strong>Registry records.</strong> Resolved the domain through ICANN Lookup, which passes <code>.my</code>
+    queries to MYNIC. Recorded registrar, creation and expiry dates, and which registrant fields are redacted.</li>
+    <li><strong>Breach exposure.</strong> Checked my own email address in Have I Been Pwned (the lab rules allow
+    only your own address). Noted the privacy design of the password checker: only the first five characters of a
+    SHA-1 hash leave the device. The API's unauthenticated breach search returned an error response (the v3 API
+    requires a key), so the check was completed through the website interface. My personal results are
+    <strong>deliberately excluded</strong> from this public repository.</li>
+    <li><strong>File metadata.</strong> Analysed the course sample photo with Metadata2Go and recorded every EXIF
+    field that travels invisibly with the file.</li>
+  </ol>
+
+  <h3>Results</h3>
+  <div class="table-scroll"><table>
+    <tr><th>Finding</th><th>Attacker's view</th><th>Defensive action</th></tr>
+    <tr>
+      <td>232 CT hostnames, including <code>eduvpn</code>, <code>jktmktest</code>, <code>admin.imputra</code>,
+      <code>my-gitlab</code>, <code>idec-gitlab</code>, <code>ezadmin</code>, <code>ezproxy-admin</code>,
+      <code>phpnew</code> — none advertised on the public website</td>
+      <td>A free map of hidden services, generated from certificates alone</td>
+      <td>Treat every certificate as public; choose hostnames that do not describe the service; retire old
+      subdomains and certificates (attack surface management)</td>
+    </tr>
+    <tr>
+      <td>MX: own gateways <code>mailgw1</code>/<code>mailgw2</code> (priorities 1–2) in front of Google Workspace
+      (<code>aspmx.l.google.com</code>)</td>
+      <td>Reveals who handles the organisation's email — phishing is easier to plan</td>
+      <td>Publish only necessary DNS records; enforce MFA; deploy SPF, DKIM and DMARC</td>
+    </tr>
+    <tr>
+      <td>NS: self-hosted <code>ns1</code>/<code>ns2</code>; WHOIS: registered 1996-12-18, expires 2032-12-18,
+      registrar MYNIC; personal registrant fields REDACTED</td>
+      <td>A nearly 30-year-old domain with a huge historical attack surface</td>
+      <td>Registry privacy (redaction) is already in place; keep it on renewals</td>
+    </tr>
+    <tr>
+      <td>Breach data on staff accounts (checked on my own address only)</td>
+      <td>Credential-stuffing material</td>
+      <td>Watch breach lists for the organisation's domains; unique passwords + MFA</td>
+    </tr>
+    <tr>
+      <td>EXIF: GPS 3.1201 N, 101.6544 E (University of Malaya campus), Apple iPhone 14, taken 2026-03-02 09:14,
+      artist "a.wahab" — the sample file itself labels this metadata as planted for teaching</td>
+      <td>One file quietly leaks location, device, time and author</td>
+      <td>Strip metadata before publishing any file</td>
+    </tr>
+  </table></div>
+
+  <h3>Evidence</h3>
+  <ul>
+    <li><a href="evidence/crt-subdomains-sample.txt"><code>evidence/crt-subdomains-sample.txt</code></a> —
+    sanitised sample of the crt.sh result set (email-like entries filtered out)</li>
+    <li><a href="evidence/whois-upm-excerpt.txt"><code>evidence/whois-upm-excerpt.txt</code></a> — MYNIC registry
+    record for the target domain (public data, fields redacted by the registry)</li>
+    <li><a href="evidence/README.md"><code>evidence/README.md</code></a> — provenance and sanitisation notes</li>
+  </ul>
+
+  <h3>What I would do differently</h3>
+  <ul>
+    <li><strong>Automate everything from the start.</strong> The final approach (crt.sh JSON API via
+    <code>curl</code> + <code>jq</code>) already replaces manual browsing; the same should be done for DNS history
+    and for diffing two CT snapshots over time, where new certificates act as a change detector.</li>
+    <li><strong>Add passive DNS history and SPF/DKIM/DMARC checks.</strong> The defender-side controls were derived
+    by hand here; they can be measured directly.</li>
+    <li><strong>Resolve the HIBP API limitation earlier.</strong> The unauthenticated breach API returned an error
+    (key required), which cost a round trip before falling back to the website interface.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Scope and ethics.</strong> Passive-only: no packets were sent to the target; every source is public by
+    design or self-referential; the breach check used my own address; personal results are excluded from this
+    public repository. The lab target is a public university domain named in the course brief.
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Zhao Siyan · <a href="../../index.html">back to portfolio</a></span>
+    <span><a href="https://github.com/EngineerAndJohn/cybersecurity-portfolio">Repository</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

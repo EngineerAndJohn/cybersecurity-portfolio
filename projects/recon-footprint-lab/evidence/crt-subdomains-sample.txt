@@ -1,0 +1,41 @@
+crt.sh query: %.upm.edu.my (Certificate Transparency search)
+Unique hostnames returned: 232 (full set kept private; sample below)
+Email-like certificate entries filtered out of the published sample.
+
+Selected internal-looking or test-related names:
+  eduvpn.upm.edu.my
+  jktmktest.upm.edu.my
+  admin.imputra.upm.edu.my
+  vpn2.upm.edu.my
+  ezadmin.upm.edu.my
+  ezproxy-admin.upm.edu.my
+  my-gitlab.upm.edu.my
+  idec-gitlab.upm.edu.my
+  phpnew.upm.edu.my
+
+Alphabetical sample of the remaining names:
+  17025.upm.edu.my
+  acc.upm.edu.my
+  accounts.imputra.upm.edu.my
+  acn.upm.edu.my
+  admin.imputra.upm.edu.my
+  ahrd-aracd.upm.edu.my
+  ai.upm.edu.my
+  ajac-fbmk.upm.edu.my
+  analytics.upm.edu.my
+  api.imputra.upm.edu.my
+  aprp.upm.edu.my
+  autoimpute.upm.edu.my
+  autoimputex.upm.edu.my
+  bbb.upm.edu.my
+  bbb2.upm.edu.my
+  biasiswakpm.upm.edu.my
+  bits.upm.edu.my
+  booking.hsaas.upm.edu.my
+  bulandigital.upm.edu.my
+  cal.upm.edu.my
+  cala2020.upm.edu.my
+  cognitii.upm.edu.my
+  cosmos-satreps.upm.edu.my
+  cpanel.cosmos-satreps.upm.edu.my
+  cpanel.engineeringproducts.upm.edu.my
